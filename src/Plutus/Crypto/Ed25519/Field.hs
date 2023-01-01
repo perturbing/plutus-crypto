@@ -3,7 +3,7 @@
 module Plutus.Crypto.Ed25519.Field (
     Ed25519FElement,
     Ed25519GElement,
-    ed25519_F_inv
+    ed25519_F_recip
 ) where
 
 import PlutusTx
@@ -41,11 +41,11 @@ instance MultiplicativeMonoid Ed25519FElement where
 -- | the unsafe inverse of the multiplicative group over the field (excluding 0). 
 -- This is only used in the additive definition of the Ed25519 group of point addition along the curve
 -- In this case, the input can never be 0 (one +- dxy is strictly non zero)
-ed25519_F_inv :: Ed25519FElement -> Ed25519FElement
-ed25519_F_inv (Ed25519FElement a) = Ed25519FElement b
+ed25519_F_recip :: Ed25519FElement -> Ed25519FElement
+ed25519_F_recip (Ed25519FElement a) = Ed25519FElement b
     where Ed25519FElement p = ed25519_p
           b = modInv a p
-{-# INLINABLE ed25519_F_inv #-}
+{-# INLINABLE ed25519_F_recip #-}
 
 -- | this function is unsafe! 0 has no inverse and if the m is not a prime, an inverse may not exist at all.
 modInv :: Integer -> Integer -> Integer

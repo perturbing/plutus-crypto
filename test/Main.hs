@@ -55,7 +55,7 @@ prop_F_mul_identity a = a P.* P.one P.== a
 prop_F_mul_inverses :: PR.Ed25519FElement -> Bool
 prop_F_mul_inverses a 
     | a P.== P.zero = True
-    | otherwise   = a P.* F.ed25519_F_inv a P.== P.one
+    | otherwise   = a P.* F.ed25519_F_recip a P.== P.one
 
 -- | Group prop of Ed25519
 

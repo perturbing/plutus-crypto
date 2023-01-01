@@ -30,8 +30,8 @@ instance AdditiveSemigroup Ed25519GElement where
                     x1y2 = x1 * y2
                     x2y1 = x2 * y1
                     dxy  = ed25519_d * x1x2 * y1y2
-                    x3   = (x1y2 + x2y1) * ed25519_F_inv (one + dxy)
-                    y3   = (y1y2 + x1x2) * ed25519_F_inv (one - dxy)
+                    x3   = (x1y2 + x2y1) * ed25519_F_recip (one + dxy)
+                    y3   = (y1y2 + x1x2) * ed25519_F_recip (one - dxy)
             
 instance AdditiveMonoid Ed25519GElement where
     {-# INLINABLE zero #-}
