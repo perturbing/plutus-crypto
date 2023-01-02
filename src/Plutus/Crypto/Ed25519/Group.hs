@@ -1,8 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
 module Plutus.Crypto.Ed25519.Group (
-    Ed25519FElement,
-    Ed25519GElement,
+    Ed25519GElement (..),
     ed25519_check_point,
     ed25519_P
 ) where

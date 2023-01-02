@@ -1,6 +1,14 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Plutus.Crypto.Ed25519.Conversion where
+module Plutus.Crypto.Ed25519.Conversion (
+  integerToBuiltinByteString32Length,
+  ed25519_F_serialise,
+  ed25519_F_deserialise,
+  ed25519_F_to_integer,
+  ed25519_F_from_integer,
+  ed25519_G_serialise,
+  ed25519_G_deserialise,
+) where
 
 import PlutusTx
 import PlutusTx.Prelude

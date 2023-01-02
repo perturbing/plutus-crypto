@@ -1,6 +1,12 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Plutus.Crypto.Ed25519.Params where
+module Plutus.Crypto.Ed25519.Params (
+    ed25519_p,
+    ed25519_P,
+    ed25519_d,
+    Ed25519FElement (..),
+    Ed25519GElement (..)
+) where
 
 import PlutusTx
 import PlutusTx.Prelude

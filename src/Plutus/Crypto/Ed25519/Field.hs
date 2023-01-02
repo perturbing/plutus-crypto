@@ -1,8 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
 module Plutus.Crypto.Ed25519.Field (
-    Ed25519FElement,
-    Ed25519GElement,
+    Ed25519FElement (..),
     ed25519_F_recip
 ) where
 
