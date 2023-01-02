@@ -5,7 +5,6 @@ module Plutus.Crypto.Ed25519 (
     ed25519_d,
     -- field 
     Ed25519FElement (..),
-    ed25519_F_recip,
     -- group
     Ed25519GElement (..),
     ed25519_check_point,
