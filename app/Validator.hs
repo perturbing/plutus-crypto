@@ -8,6 +8,7 @@
 module Validator where
 
 import PlutusTx as Plutus
+import PlutusTx.Numeric
 import PlutusTx.Prelude as Plutus
 import qualified Plutus.V2.Ledger.Api as Plutus
 import Plutus.Script.Utils.V2.Typed.Scripts.Validators as Utils
@@ -28,7 +29,7 @@ import qualified Plutus.Crypto.Ed25519 as ED
 
 {-# INLINEABLE ed25519Val #-}
 ed25519Val :: ED.Ed25519GElement -> ED.Ed25519GElement -> Plutus.ScriptContext -> Bool
-ed25519Val x y _ = x == y + y
+ed25519Val x y _ = ED.ed25519_check_point x
 
 validator :: Plutus.Validator
 validator = Plutus.Validator $ Plutus.fromCompiledCode ($$(Plutus.compile [|| wrap ||]))
@@ -45,4 +46,4 @@ scriptSerialised :: PlutusScript PlutusScriptV2
 scriptSerialised = PlutusScriptSerialised scriptSBS
 
 writeScript :: Haskell.IO ()
-writeScript = Haskell.void $ writeFileTextEnvelope "Ed25519PointAddition.plutus" Nothing scriptSerialised
+writeScript = Haskell.void $ writeFileTextEnvelope "Ed25519.plutus" Nothing scriptSerialised

@@ -11,30 +11,24 @@ import Plutus.Crypto.Ed25519.Params
 import qualified Prelude as Haskell
 
 instance Eq Ed25519FElement where
-    {-# INLINABLE (==) #-}
     Ed25519FElement a == Ed25519FElement b = a == b
 
 instance AdditiveSemigroup Ed25519FElement where
-    {-# INLINABLE (+) #-}
     (+) (Ed25519FElement a) (Ed25519FElement b) = Ed25519FElement $ (a+b) `modulo` p
         where Ed25519FElement p = ed25519_p
 
 instance AdditiveMonoid Ed25519FElement where
-    {-# INLINABLE zero #-}
     zero = Ed25519FElement 0
 
 instance AdditiveGroup Ed25519FElement where
-    {-# INLINABLE (-) #-}
     (-) (Ed25519FElement a) (Ed25519FElement b) = Ed25519FElement $ (a-b) `modulo` p
         where Ed25519FElement p = ed25519_p
 
 instance MultiplicativeSemigroup Ed25519FElement where
-    {-# INLINABLE (*) #-}
     (*) (Ed25519FElement a) (Ed25519FElement b) = Ed25519FElement $ (a*b) `modulo` p
         where Ed25519FElement p = ed25519_p
 
 instance MultiplicativeMonoid Ed25519FElement where
-    {-# INLINABLE one #-}
     one = Ed25519FElement 1
 
 -- | the unsafe inverse of the multiplicative group over the field (excluding 0). 
