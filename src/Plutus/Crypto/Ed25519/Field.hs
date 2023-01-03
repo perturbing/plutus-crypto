@@ -2,11 +2,12 @@
 
 module Plutus.Crypto.Ed25519.Field (
     Ed25519FElement (..),
-    ed25519_F_recip
+    ed25519_F_recip,
 ) where
 
 import PlutusTx
 import PlutusTx.Prelude
+import PlutusTx.Numeric
 import Plutus.Crypto.Ed25519.Params (Ed25519FElement (..), ed25519_p)
 
 instance Eq Ed25519FElement where
@@ -56,9 +57,9 @@ modInv a m = mkPos i
 {-# INLINABLE modInv #-}
 
 gcdExt :: Integer -> Integer -> (Integer, Integer, Integer)
-gcdExt a 0 = (1, 0, a)
-gcdExt a b =
-  let (q, r) = a `quotRem` b
-      (s, t, g) = gcdExt b r
-  in (t, s - q * t, g)
+gcdExt a b
+    | b == 0    = (1, 0, a)
+    | otherwise = (t, s - q * t, g)
+        where (q, r) = a `quotRem` b
+              (s, t, g) = gcdExt b r
 {-# INLINABLE gcdExt #-}

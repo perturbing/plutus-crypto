@@ -9,7 +9,6 @@
 module Validator where
 
 import PlutusTx as Plutus
-import PlutusTx.Numeric
 import PlutusTx.Prelude as Plutus
 import qualified Plutus.V2.Ledger.Api as Plutus
 import Plutus.Script.Utils.V2.Typed.Scripts.Validators as Utils
@@ -29,8 +28,8 @@ import qualified Data.Aeson as Aeson
 import qualified Plutus.Crypto.Ed25519 as ED
 
 {-# INLINEABLE ed25519Val #-}
-ed25519Val :: ED.Ed25519GElement -> ED.Ed25519GElement -> Plutus.ScriptContext -> Bool
-ed25519Val x y _ = x == y + y
+ed25519Val :: ED.Ed25519GElement -> ED.Ed25519FElement -> Plutus.ScriptContext -> Bool
+ed25519Val p n _ = p == scale n ED.ed25519_P
 
 validator :: Plutus.Validator
 validator = Plutus.Validator $ Plutus.fromCompiledCode ($$(Plutus.compile [|| wrap ||]))
