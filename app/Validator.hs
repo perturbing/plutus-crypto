@@ -29,8 +29,8 @@ import qualified Data.Aeson as Aeson
 import qualified Plutus.Crypto.Ed25519 as ED
 
 {-# INLINEABLE ed25519Val #-}
-ed25519Val1 :: ED.Ed25519GElement -> ED.Ed25519GElement -> Plutus.ScriptContext -> Bool
-ed25519Val1 x y _ = x == y + y
+ed25519Val :: ED.Ed25519GElement -> ED.Ed25519GElement -> Plutus.ScriptContext -> Bool
+ed25519Val x y _ = x == y + y
 
 validator :: Plutus.Validator
 validator = Plutus.Validator $ Plutus.fromCompiledCode ($$(Plutus.compile [|| wrap ||]))
