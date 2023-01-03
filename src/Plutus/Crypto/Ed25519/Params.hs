@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Plutus.Crypto.Ed25519.Params (
     ed25519_p,
@@ -14,8 +15,10 @@ import PlutusTx.Prelude
 import qualified Prelude as Haskell
 
 newtype Ed25519FElement = Ed25519FElement Integer deriving (Haskell.Show)
+unstableMakeIsData ''Ed25519FElement
 
 newtype Ed25519GElement = Ed25519GElement (Ed25519FElement,Ed25519FElement) deriving (Haskell.Show)
+unstableMakeIsData ''Ed25519GElement
 
 -- | is 2^255 - 19 as per https://www.rfc-editor.org/rfc/rfc7748#section-4.1
 ed25519_p :: Ed25519FElement

@@ -50,7 +50,6 @@ library
       , bytestring
       , serialise
       , text
-      , QuickCheck
 
 
 
@@ -62,12 +61,8 @@ test-suite unit
   ghc-options:        -threaded -rtsopts
   build-tool-depends: hspec-discover:hspec-discover -any
   build-depends:
-    , array
     , base
-    , base16
     , bytestring
-    , containers
-    , hspec
     , plutus-core
     , plutus-ledger-api
     , plutus-tx
@@ -77,8 +72,20 @@ test-suite unit
 
 executable plutus-crypto-executable
     main-is:          Main.hs
+    other-modules:    Validator
     build-depends:
         base >=4.9 && <5
+      , cardano-api            >=1.35
+      , plutus-core            >=1.0.0
+      , plutus-ledger-api      >=1.0.0
+      , plutus-tx              >=1.0.0
+      , plutus-tx-plugin       >=1.0.0
+      , plutus-ledger          >=1.0.0
+      , plutus-script-utils    >=1.0.0
+      , bytestring
+      , serialise
+      , text
+      , aeson
       , plutus-crypto
     hs-source-dirs:   app
     default-language: Haskell2010
