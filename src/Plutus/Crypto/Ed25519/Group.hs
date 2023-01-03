@@ -3,7 +3,8 @@
 module Plutus.Crypto.Ed25519.Group (
     Ed25519GElement (..),
     ed25519_check_point,
-    ed25519_P
+    ed25519_P,
+    ed25519_G_add
 ) where
 
 import PlutusTx
@@ -55,3 +56,18 @@ instance Module Ed25519FElement Ed25519GElement where
 ed25519_check_point :: Ed25519GElement -> Bool
 ed25519_check_point (Ed25519GElement (x1, y1)) = y1*y1 - x1*x1 == one + ed25519_d*x1*x1*y1*y1
 {-# INLINABLE ed25519_check_point #-}
+
+ed25519_G_add :: Ed25519GElement -> Ed25519GElement -> Ed25519GElement
+ed25519_G_add (Ed25519GElement (x1,y1)) (Ed25519GElement (x2,y2)) 
+            | Ed25519GElement (x1,y1) == zero = Ed25519GElement (x2,y2)
+            | Ed25519GElement (x2,y2) == zero = Ed25519GElement (x1,y1)
+            | otherwise                       = Ed25519GElement (x3,y3)
+                where   
+                    x1x2 = x1 * x2
+                    y1y2 = y1 * y2
+                    x1y2 = x1 * y2
+                    x2y1 = x2 * y1
+                    dxy  = ed25519_d * x1x2 * y1y2
+                    x3   = (x1y2 + x2y1) * ed25519_F_recip (one + dxy)
+                    y3   = (y1y2 + x1x2) * ed25519_F_recip (one - dxy)
+{-# INLINABLE ed25519_G_add #-}

@@ -11,6 +11,7 @@ module Plutus.Crypto.Ed25519.Params (
 
 import PlutusTx
 import PlutusTx.Prelude
+import PlutusTx.Builtins
 
 import qualified Prelude as Haskell
 
