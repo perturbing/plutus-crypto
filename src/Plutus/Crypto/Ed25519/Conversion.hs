@@ -16,8 +16,6 @@ import Plutus.Crypto.Ed25519.Params
 import Plutus.Crypto.Ed25519.Field
 import Plutus.Crypto.Ed25519.Group
 
-import qualified Prelude as Haskell
-
 -- | Convert a BuiltinByteString to their positive integer representation (Big endian).
 builtinByteStringToInteger :: BuiltinByteString -> Integer
 builtinByteStringToInteger bs = let g x = lengthOfByteString x - 1

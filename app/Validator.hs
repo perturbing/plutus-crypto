@@ -3,6 +3,7 @@
 {-# LANGUAGE ScopedTypeVariables    #-}
 {-# LANGUAGE TemplateHaskell        #-}
 {-# LANGUAGE TypeFamilies           #-}
+{-# LANGUAGE NoImplicitPrelude      #-}
 {-# LANGUAGE DataKinds              #-}
 
 module Validator where

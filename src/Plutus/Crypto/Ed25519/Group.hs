@@ -11,8 +11,6 @@ import PlutusTx.Prelude
 import Plutus.Crypto.Ed25519.Field
 import Plutus.Crypto.Ed25519.Params
 
-import qualified Prelude as Haskell
-
 instance Eq Ed25519GElement where
     {-# INLINABLE (==) #-}
     Ed25519GElement a == Ed25519GElement b = a == b

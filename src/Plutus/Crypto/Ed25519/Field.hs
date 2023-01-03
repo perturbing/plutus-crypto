@@ -8,7 +8,6 @@ module Plutus.Crypto.Ed25519.Field (
 import PlutusTx
 import PlutusTx.Prelude
 import Plutus.Crypto.Ed25519.Params
-import qualified Prelude as Haskell
 
 instance Eq Ed25519FElement where
     {-# INLINABLE (==) #-}
