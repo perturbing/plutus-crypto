@@ -28,20 +28,14 @@ import qualified Data.Aeson as Aeson
 
 import qualified Plutus.Crypto.Ed25519 as ED
 
--- this does not compile
-{-# INLINEABLE ed25519Val1 #-}
+{-# INLINEABLE ed25519Val #-}
 ed25519Val1 :: ED.Ed25519GElement -> ED.Ed25519GElement -> Plutus.ScriptContext -> Bool
-ed25519Val1 x y _ = x == ED.ed25519_G_add y y 
-
--- this compiles
-{-# INLINEABLE ed25519Val2 #-}
-ed25519Val2 :: ED.Ed25519GElement -> ED.Ed25519GElement -> Plutus.ScriptContext -> Bool
-ed25519Val2 x y _ = x == y
+ed25519Val1 x y _ = x == y + y
 
 validator :: Plutus.Validator
 validator = Plutus.Validator $ Plutus.fromCompiledCode ($$(Plutus.compile [|| wrap ||]))
   where
-      wrap = Utils.mkUntypedValidator ed25519Val1 -- <--- change me from ed25519Val2 to ed25519Val1
+      wrap = Utils.mkUntypedValidator ed25519Val
 
 script :: Plutus.Script
 script = Plutus.unValidatorScript validator
