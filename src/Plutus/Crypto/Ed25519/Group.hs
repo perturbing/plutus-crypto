@@ -8,8 +8,8 @@ module Plutus.Crypto.Ed25519.Group (
 
 import PlutusTx
 import PlutusTx.Prelude
-import Plutus.Crypto.Ed25519.Field
-import Plutus.Crypto.Ed25519.Params
+import Plutus.Crypto.Ed25519.Field (Ed25519FElement (..), ed25519_F_recip)
+import Plutus.Crypto.Ed25519.Params (Ed25519GElement (..), ed25519_d, ed25519_P)
 
 instance Eq Ed25519GElement where
     {-# INLINABLE (==) #-}

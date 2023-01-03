@@ -12,6 +12,8 @@ module Plutus.Crypto.Ed25519.Params (
 import PlutusTx
 import PlutusTx.Prelude
 
+import qualified Prelude as Haskell
+
 newtype Ed25519FElement = Ed25519FElement Integer deriving (Haskell.Show)
 unstableMakeIsData ''Ed25519FElement
 

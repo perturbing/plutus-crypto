@@ -7,7 +7,7 @@ module Plutus.Crypto.Ed25519.Field (
 
 import PlutusTx
 import PlutusTx.Prelude
-import Plutus.Crypto.Ed25519.Params
+import Plutus.Crypto.Ed25519.Params (Ed25519FElement (..), ed25519_p)
 
 instance Eq Ed25519FElement where
     {-# INLINABLE (==) #-}
