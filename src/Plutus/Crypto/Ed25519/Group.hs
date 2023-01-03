@@ -14,9 +14,11 @@ import Plutus.Crypto.Ed25519.Params
 import qualified Prelude as Haskell
 
 instance Eq Ed25519GElement where
+    {-# INLINABLE (==) #-}
     Ed25519GElement a == Ed25519GElement b = a == b
 
 instance AdditiveSemigroup Ed25519GElement where
+    {-# INLINABLE (+) #-}
     (+) (Ed25519GElement (x1,y1)) (Ed25519GElement (x2,y2)) 
             | Ed25519GElement (x1,y1) == zero = Ed25519GElement (x2,y2)
             | Ed25519GElement (x2,y2) == zero = Ed25519GElement (x1,y1)
@@ -31,12 +33,15 @@ instance AdditiveSemigroup Ed25519GElement where
                     y3   = (y1y2 + x1x2) * ed25519_F_recip (one - dxy)
             
 instance AdditiveMonoid Ed25519GElement where
+    {-# INLINABLE zero #-}
     zero = Ed25519GElement (zero,one)
 
 instance AdditiveGroup Ed25519GElement where
+    {-# INLINABLE (-) #-}
     (-) a (Ed25519GElement (x,y))  = a + Ed25519GElement (negate x,y)
 
 instance Module Ed25519FElement Ed25519GElement where
+    {-# INLINABLE scale #-}
     scale = go
         where
             go :: Ed25519FElement -> Ed25519GElement -> Ed25519GElement
