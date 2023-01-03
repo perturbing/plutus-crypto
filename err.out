@@ -1,6 +1,0 @@
-Build profile: -w ghc-8.10.7 -O1
-In order, the following will be built (use -v for more details):
- - plutus-crypto-0.1.0.0 (exe:plutus-crypto-executable) (file app/Validator.hs changed)
-Preprocessing executable 'plutus-crypto-executable' for plutus-crypto-0.1.0.0..
-Building executable 'plutus-crypto-executable' for plutus-crypto-0.1.0.0..
-[1 of 2] Compiling Validator        ( app/Validator.hs, /home/fermat/IOHK/git/plutus-crypto/dist-newstyle/build/x86_64-linux/ghc-8.10.7/plutus-crypto-0.1.0.0/x/plutus-crypto-executable/build/plutus-crypto-executable/plutus-crypto-executable-tmp/Validator.o, /home/fermat/IOHK/git/plutus-crypto/dist-newstyle/build/x86_64-linux/ghc-8.10.7/plutus-crypto-0.1.0.0/x/plutus-crypto-executable/build/plutus-crypto-executable/plutus-crypto-executable-tmp/Validator.dyn_o )
