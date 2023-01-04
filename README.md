@@ -13,4 +13,4 @@ From the source of these improvements see the original DJB paper "High speed Hig
 # Possible extentions
 
 - Add El Gamal and some ZK proofs (DLOG and DLEQ) and possibly a proof of correct [shuffle](http://www0.cs.ucl.ac.uk/staff/J.Groth/MinimalShuffle.pdf) (though I do not now how succinct this proof is)
-- Add a EC [VRF](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vrf-15#name-elliptic-curve-vrf-ecvrf)
+- Add a EC [VRF](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vrf-15#name-elliptic-curve-vrf-ecvrf). Would be cool to have onchain randomness generated this way as [chainlink](https://chain.link/vrf) does
