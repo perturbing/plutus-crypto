@@ -1,3 +1,4 @@
+shell.nix
 dist
 dist-*
 cabal-dev
