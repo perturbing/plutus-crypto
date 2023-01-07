@@ -9,7 +9,7 @@ import PlutusTx
 import PlutusTx.Prelude
 
 -- | Exponentiate x^n. 
--- This function gives an error for negative integers.
+-- This function will give an error for negative integers.
 exponentiate :: Integer -> Integer -> Integer
 exponentiate x n
     | n < 0 || x < 0    = error ()
@@ -20,7 +20,7 @@ exponentiate x n
 {-# INLINABLE exponentiate #-}
 
 -- | Exponentiate b^e mod m.
--- This function gives an error for negative integers.
+-- This function will give an error for negative integers.
 exponentiateMod :: Integer -> Integer -> Integer -> Integer
 exponentiateMod b e m
     | b < 0 || e < 0 || m < 0 = error ()

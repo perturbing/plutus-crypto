@@ -12,11 +12,12 @@ import PlutusTx
 import PlutusTx.Prelude
 
 import Plutus.Crypto.Number.ModArithmetic
-import Plutus.Crypto.Number.Bits
+import Plutus.Data.Bits
 
 -- | i2osp converts a positive integer into a builtin byte string
 --   Plutus version of `(Crypto.Number.Serialize.i2osp)`
 --   As per rfc3447, the first byte is the most significant byte.
+--   This function will give an error for a negative integer.
 i2osp :: Integer -> BuiltinByteString
 i2osp n
     | n < 0     = error ()
@@ -30,6 +31,7 @@ i2osp n
 -- | os2ip converts a builtin byte string into a positive integer
 --   Plutus version of `(Crypto.Number.Serialize.os2ip)`
 --   As per rfc3447, the first byte is the most significant byte
+--   This function will give an error for an empty builtin byte string
 os2ip :: BuiltinByteString -> Integer
 os2ip bs 
     | bs == emptyByteString = error ()

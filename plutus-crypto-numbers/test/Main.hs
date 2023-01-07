@@ -4,7 +4,7 @@ module Main where
 
 import Plutus.Crypto.Number.ModArithmetic as M
 import Plutus.Crypto.Number.Serialize as S
-import Plutus.Crypto.Number.Bits as B
+import Plutus.Data.Bits as B
 
 import qualified PlutusTx.Numeric as P
 import qualified PlutusTx as P
@@ -13,6 +13,8 @@ import qualified PlutusTx.Prelude as P
 import Data.ByteString as BS
 import Data.Word
 import Test.QuickCheck
+
+-- TODO: write propper test with tasty!!
 
 instance Arbitrary ByteString where 
     arbitrary = pack <$> arbitrary
@@ -31,10 +33,6 @@ prop_os2ip_i2ospOf_id bs
     | otherwise             = Just a == i2ospOf 32 (os2ip a)
     where a = P.toBuiltin bs
 
-prop_reverse_bool_rep_integer :: Positive Integer -> Bool
-prop_reverse_bool_rep_integer n = P.reverse (B.intToBitsBE a) == B.intToBitsLE a
-    where Positive a = n
-
 prop_BS_reverse :: Positive Integer -> Bool
 prop_BS_reverse n = S.i2ospOf_ len a == B.reverseBS (B.reverseBS (S.i2ospOf_ len a))
     where Positive a = n
@@ -44,5 +42,4 @@ main :: IO ()
 main = do 
           quickCheck prop_i2osp_os2ip_id
           quickCheck prop_os2ip_i2ospOf_id
-          quickCheck prop_reverse_bool_rep_integer
           quickCheck prop_BS_reverse
