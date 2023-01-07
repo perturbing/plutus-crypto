@@ -6,17 +6,13 @@ module Plutus.Crypto.Number.Serialize (
 , i2ospOf
 , i2ospOf_
 , lengthBytes
-, intToBitsBE
-, intToBitsLE
-, bitsLEToInt
-, bitsBEToInt
-, reverseBS
 ) where
 
 import PlutusTx
 import PlutusTx.Prelude
 
 import Plutus.Crypto.Number.ModArithmetic
+import Plutus.Crypto.Number.Bits
 
 -- | i2osp converts a positive integer into a builtin byte string
 --   Plutus version of `(Crypto.Number.Serialize.i2osp)`
@@ -84,43 +80,3 @@ nullPadding n = go n (consByteString 0 emptyByteString)
             | even n      = go (n `divide` 2) bs <> go (n `divide` 2) bs
             | otherwise   = go ((n-1) `divide` 2) bs <> go ((n-1) `divide` 2) bs <> bs
 {-# INLINEABLE nullPadding #-}
-
--- | A visual representation of a bytestring for a low level view (little endian)
-intToBitsLE :: Integer -> [Bool]
-intToBitsLE n 
-    | n == 0 = []
-    | otherwise = [n `remainder` 2 == 1 ] ++ intToBitsLE (n `quotient` 2)
-{-# NOINLINE intToBitsLE #-}
-
--- | A visual representation of a bytestring for a low level view (big endian)
-intToBitsBE :: Integer -> [Bool]
-intToBitsBE n 
-    | n == 0 = []
-    | otherwise = intToBitsBE (n `quotient` 2) ++ [n `remainder` 2 == 1 ]
-{-# NOINLINE intToBitsBE #-}
-
--- | Convert a visual representation of bits into an integer (Little endian)
-bitsLEToInt :: [Bool] -> Integer
-bitsLEToInt = go 0
-    where go n (x:xs)
-            | xs == []  = if x then 2 `exponentiate` n else 0
-            | x         = 2 `exponentiate` n + go (n+1) xs
-            | otherwise = go (n+1) xs
-{-# NOINLINE bitsLEToInt #-}
-
-bitsBEToInt :: [Bool] -> Integer
-bitsBEToInt = bitsLEToInt . reverse
-{-# NOINLINE bitsBEToInt #-}
-
--- | TODO: fix this function!
-reverseBS :: BuiltinByteString -> BuiltinByteString 
-reverseBS bs = i2ospOf_ 32 . bitsBEToInt $ ys
-    where xs = intToBitsBE . os2ip $ bs
-          ys = reverse $ boolPadding (256 - length xs) ++ xs
-{-# INLINEABLE reverseBS #-}
-
-boolPadding :: Integer -> [Bool]
-boolPadding n 
-    | n==0      = []
-    | otherwise = [False] ++ boolPadding (n-1)
-{-# INLINEABLE boolPadding #-}
