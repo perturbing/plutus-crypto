@@ -62,6 +62,7 @@ byteLEToInt :: [Bool] -> Integer
 byteLEToInt xs
     | length xs /= 8    = error ()
     | otherwise         = bitsLEToInt xs
+{-# INLINEABLE byteLEToInt #-}
 
 -- | A visual representation of a bytestring for a low level view (big endian)
 --   Note that for a negative integer this does not terminate.
@@ -80,6 +81,7 @@ intToByteBE n
     | n > 255 || n < 0  = error ()
     | otherwise         = boolPadding (8 - length xs) ++ xs
     where xs = intToBitsBE n
+{-# INLINEABLE intToByteBE #-}
 
 -- | Convert bits represented as a list of bools into an integer (big endian)
 bitsBEToInt :: [Bool] -> Integer
@@ -92,6 +94,7 @@ byteBEToInt :: [Bool] -> Integer
 byteBEToInt xs
     | length xs /= 8    = error ()
     | otherwise         = bitsBEToInt xs
+{-# INLINEABLE byteBEToInt #-}
 
 -- | Reverse a byte in its integer representation.
 --   So 1 -> 128, 2->64, 4->32, 8->16, 16->8 ...
@@ -201,9 +204,5 @@ clearBit bs n
 testBit :: BuiltinByteString -> Integer -> Bool
 testBit bs n
     | n < 0 || n >= 8 * lengthOfByteString bs   = error ()
-    | otherwise                                 = bool
-    where bytePos   = n `quotient` 8
-          bitPos    = n `remainder` 8
-          byte      = indexByteString bs bytePos
-          bool      = testBit' (intToByteBE byte) bitPos
+    | otherwise                                 = testBit' (intToByteBE (indexByteString bs (n `quotient` 8))) (n `remainder` 8)
 {-# INLINEABLE testBit #-}
