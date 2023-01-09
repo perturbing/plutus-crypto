@@ -10,6 +10,8 @@ import PlutusTx.Prelude
 import PlutusTx.Numeric
 import Plutus.Crypto.Ed25519.Params (Ed25519FElement (..), ed25519_p)
 
+import Plutus.Crypto.Number.ModArithmetic
+
 instance Eq Ed25519FElement where
     {-# INLINABLE (==) #-}
     Ed25519FElement a == Ed25519FElement b = a == b
@@ -43,23 +45,5 @@ instance MultiplicativeMonoid Ed25519FElement where
 ed25519_F_recip :: Ed25519FElement -> Ed25519FElement
 ed25519_F_recip (Ed25519FElement a) = Ed25519FElement b
     where Ed25519FElement p = ed25519_p
-          b = modInv a p
+          b = exponentiateMod a (p-2) p
 {-# INLINABLE ed25519_F_recip #-}
-
--- | this function is unsafe! 0 has no inverse and if the m is not a prime, an inverse may not exist at all.
-modInv :: Integer -> Integer -> Integer
-modInv a m = mkPos i
-  where
-    (i, _, _) = gcdExt a m
-    mkPos x
-      | x < 0 = x + m
-      | otherwise = x
-{-# INLINABLE modInv #-}
-
-gcdExt :: Integer -> Integer -> (Integer, Integer, Integer)
-gcdExt a b
-    | b == 0    = (1, 0, a)
-    | otherwise = (t, s - q * t, g)
-        where (q, r) = a `quotRem` b
-              (s, t, g) = gcdExt b r
-{-# INLINABLE gcdExt #-}

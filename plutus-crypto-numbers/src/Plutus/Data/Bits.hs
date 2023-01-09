@@ -1,16 +1,19 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
 module Plutus.Data.Bits (
+-- * conversion functions
   intToByteBE
 , byteBEToInt
 , intToByteLE
 , byteLEToInt
+-- * inversion functions
 , reverseByte
 , reverseBS
+-- * bit operation on builtin byte strings
 , setBit
 , clearBit
 , testBit
---,shiftBits
+--,shiftBits -- TODO: make this function for fun (negative and positive shift)
 ) where
 
 import PlutusTx
@@ -101,6 +104,7 @@ byteBEToInt xs
 --
 --   This function will throw an error for negative and 
 --   intigers above 255.
+--   Since it is used internally in this module no error is thrown.
 reverseByte :: Integer -> Integer
 reverseByte = byteLEToInt . intToByteBE
 {-# INLINEABLE reverseByte #-}

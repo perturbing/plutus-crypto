@@ -1,9 +1,11 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
 module Plutus.Crypto.Ed25519.Conversion (
+-- * Basic types
   Scalar
-, scalar
 , PointCompressed 
+-- * smart constructors & destructors
+, scalar
 , pointCompressed
 ) where
 
@@ -12,9 +14,12 @@ import PlutusTx.Prelude
 
 import Plutus.Crypto.Number.Serialize
 import Plutus.Crypto.Number.ModArithmetic
+import Plutus.Data.Bits
+
+import qualified Prelude as Haskell
 
 -- | Represent a scalar in the base field.
-newtype Scalar = Scalar { unScalar :: BuiltinByteString } deriving Show
+newtype Scalar = Scalar { unScalar :: BuiltinByteString } deriving Haskell.Show
 unstablemakeisdata ''scalar
 
 -- | Smart constructor to create a scalar of the correct size.
@@ -39,9 +44,10 @@ pointCompressed bs
     | otherwise                     = PointCompressed bs
 {-# INLINABLE pointCompressed #-}
 
+-- | Unserialize little endian
 fromBytes :: BuiltinByteString -> Integer
-fromBytes = 
+fromBytes = os2ip . reverseBS
 
 -- | Serialize little endian of a given size (32 bytes)
 toBytes :: Integer -> BuiltinByteString
-toBytes = i2ospOf_ 32
+toBytes = reverseBS . i2ospOf_ 32
