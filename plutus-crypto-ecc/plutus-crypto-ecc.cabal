@@ -32,6 +32,7 @@ common lang
 library
     import:           lang
     exposed-modules:  Plutus.Crypto.Ed25519
+                    , Plutus.Crypto.Ed25519.Ed25519
                     , Plutus.Crypto.Ed25519.Field 
                     , Plutus.Crypto.Ed25519.Group
                     , Plutus.Crypto.Ed25519.Params

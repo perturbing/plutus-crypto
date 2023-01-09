@@ -6,6 +6,8 @@ module Plutus.Data.Bits (
 , byteBEToInt
 , intToByteLE
 , byteLEToInt
+, bitsLEToInt
+, bitsBEToInt
 -- * inversion functions
 , reverseByte
 , reverseBS
@@ -29,7 +31,7 @@ boolPadding :: Integer -> [Bool]
 boolPadding n 
     | n==0      = []
     | otherwise = [False] ++ boolPadding (n-1)
-{-# INLINEABLE boolPadding #-}
+{-# INLINABLE boolPadding #-}
 
 -- | A visual representation of a bytestring for a low level view (little endian)
 --   Note that for a negative integer this does not terminate.
@@ -38,7 +40,7 @@ intToBitsLE :: Integer -> [Bool]
 intToBitsLE n 
     | n == 0 = []
     | otherwise = [n `remainder` 2 == 1 ] ++ intToBitsLE (n `quotient` 2)
-{-# INLINEABLE intToBitsLE #-}
+{-# INLINABLE intToBitsLE #-}
 
 -- | Convert an positive integer smaller than 256 into its little endian
 --   representation viewed as a list of bools.
@@ -48,16 +50,16 @@ intToByteLE n
     | n > 255 || n < 0  = error ()
     | otherwise         = xs ++ boolPadding (8 - length xs)
     where xs = intToBitsLE n
-{-# INLINEABLE intToByteLE #-}
+{-# INLINABLE intToByteLE #-}
 
 -- | Convert bits represented as a list of bools into an integer (little endian)
 bitsLEToInt :: [Bool] -> Integer
-bitsLEToInt = go 0
+bitsLEToInt xs = go 0 xs
     where go n (x:xs)
             | xs == []  = if x then 2 `exponentiate` n else 0
             | x         = 2 `exponentiate` n + go (n+1) xs
             | otherwise = go (n+1) xs
-{-# INLINEABLE bitsLEToInt #-}
+{-# INLINABLE bitsLEToInt #-}
 
 -- | Convert a byte represented as a list of 8 bools into an integer (little endian)
 --   This function will fail if the length of the list is not 8.
@@ -65,7 +67,7 @@ byteLEToInt :: [Bool] -> Integer
 byteLEToInt xs
     | length xs /= 8    = error ()
     | otherwise         = bitsLEToInt xs
-{-# INLINEABLE byteLEToInt #-}
+{-# INLINABLE byteLEToInt #-}
 
 -- | A visual representation of a bytestring for a low level view (big endian)
 --   Note that for a negative integer this does not terminate.
@@ -74,7 +76,7 @@ intToBitsBE :: Integer -> [Bool]
 intToBitsBE n 
     | n == 0 = []
     | otherwise = intToBitsBE (n `quotient` 2) ++ [n `remainder` 2 == 1 ]
-{-# INLINEABLE intToBitsBE #-}
+{-# INLINABLE intToBitsBE #-}
 
 -- | Convert an positive integer smaller than 256 into its big endian
 --   representation viewed as a list of bools.
@@ -84,12 +86,12 @@ intToByteBE n
     | n > 255 || n < 0  = error ()
     | otherwise         = boolPadding (8 - length xs) ++ xs
     where xs = intToBitsBE n
-{-# INLINEABLE intToByteBE #-}
+{-# INLINABLE intToByteBE #-}
 
 -- | Convert bits represented as a list of bools into an integer (big endian)
 bitsBEToInt :: [Bool] -> Integer
 bitsBEToInt = bitsLEToInt . reverse
-{-# INLINEABLE bitsBEToInt #-}
+{-# INLINABLE bitsBEToInt #-}
 
 -- | Convert a byte represented as a list of 8 bools into an integer (big endian)
 --   This function will give an error if the length of the list is not 8.
@@ -97,7 +99,7 @@ byteBEToInt :: [Bool] -> Integer
 byteBEToInt xs
     | length xs /= 8    = error ()
     | otherwise         = bitsBEToInt xs
-{-# INLINEABLE byteBEToInt #-}
+{-# INLINABLE byteBEToInt #-}
 
 -- | Reverse a byte in its integer representation.
 --   So 1 -> 128, 2->64, 4->32, 8->16, 16->8 ...
@@ -107,14 +109,14 @@ byteBEToInt xs
 --   Since it is used internally in this module no error is thrown.
 reverseByte :: Integer -> Integer
 reverseByte = byteLEToInt . intToByteBE
-{-# INLINEABLE reverseByte #-}
+{-# INLINABLE reverseByte #-}
 
 -- | Reverse a builtin byte string of arbitrary length
 reverseBS :: BuiltinByteString -> BuiltinByteString 
 reverseBS bs
     | bs == emptyByteString = bs
     | otherwise             = reverseBS (dropByteString 1 bs) <> consByteString (reverseByte (indexByteString bs 0)) emptyByteString
-{-# INLINEABLE reverseBS #-}
+{-# INLINABLE reverseBS #-}
 
 -- | Plutus Tx version of 'Data.List.splitAt'.
 splitAt :: Integer -> [a] -> ([a], [a])
@@ -140,7 +142,7 @@ splitAt n xs
 setBit' :: [Bool] -> Integer -> [Bool]
 setBit' xs n = prefix ++ [True] ++ tail suffix
     where (prefix, suffix) = splitAt n xs
-{-# INLINEABLE setBit' #-}
+{-# INLINABLE setBit' #-}
 
 -- | clear bit n in a byte represented as a list of bools.
 --   This function acts from the left, so zero correponds
@@ -152,7 +154,7 @@ setBit' xs n = prefix ++ [True] ++ tail suffix
 clearBit' :: [Bool] -> Integer -> [Bool]
 clearBit' xs n = prefix ++ [False] ++ tail suffix
     where (prefix, suffix) = splitAt n xs
-{-# INLINEABLE clearBit' #-}
+{-# INLINABLE clearBit' #-}
 
 -- | test bit n in a byte represented as a list of bools.
 --   This function acts from the left, so zero correponds
@@ -163,7 +165,7 @@ clearBit' xs n = prefix ++ [False] ++ tail suffix
 --   Since it is used internally in this module no error is thrown.
 testBit' :: [Bool] -> Integer -> Bool
 testBit' xs n = xs !! n
-{-# INLINEABLE testBit' #-}
+{-# INLINABLE testBit' #-}
 
 -- | Set the value of a bit at position n of a builtin bytestring.
 --   Plutus version of `(Data.Bits.setBit)`.
@@ -180,7 +182,7 @@ setBit bs n
                                                     (dropByteString 1 suffix')
     where bytePos       = n `quotient` 8
           suffix'       = dropByteString bytePos bs
-{-# INLINEABLE setBit #-}
+{-# INLINABLE setBit #-}
 
 -- | Clear the value of a bit at position n of a builtin bytestring.
 --   Plutus version of `(Data.Bits.clearBit)`.
@@ -197,7 +199,7 @@ clearBit bs n
                                                     (dropByteString 1 suffix')
     where bytePos       = n `quotient` 8
           suffix'       = dropByteString bytePos bs
-{-# INLINEABLE clearBit #-}
+{-# INLINABLE clearBit #-}
 
 -- | Test the value of a bit at position n of a builtin bytestring.
 --   Plutus version of `(Data.Bits.testBit)`.
@@ -209,4 +211,4 @@ testBit :: BuiltinByteString -> Integer -> Bool
 testBit bs n
     | n < 0 || n >= 8 * lengthOfByteString bs   = error ()
     | otherwise                                 = testBit' (intToByteBE (indexByteString bs (n `quotient` 8))) (n `remainder` 8)
-{-# INLINEABLE testBit #-}
+{-# INLINABLE testBit #-}

@@ -26,10 +26,12 @@ import qualified Data.Functor as Haskell
 import qualified Data.Aeson as Aeson
 
 import qualified Plutus.Crypto.Ed25519 as ED
+import qualified Plutus.Crypto.Ed25519.Ed25519 as ED
+import qualified Plutus.Data.Bits as Bits
 
 {-# INLINEABLE ed25519Val #-}
-ed25519Val :: ED.Ed25519GElement -> ED.Ed25519FElement -> Plutus.ScriptContext -> Bool
-ed25519Val p n _ = p == scale n ED.ed25519_P
+ed25519Val :: (ED.Scalar,ED.Scalar) -> ED.Scalar -> Plutus.ScriptContext -> Bool
+ed25519Val (x,y) n _ = True
 
 validator :: Plutus.Validator
 validator = Plutus.Validator $ Plutus.fromCompiledCode ($$(Plutus.compile [|| wrap ||]))
@@ -47,3 +49,6 @@ scriptSerialised = PlutusScriptSerialised scriptSBS
 
 writeScript :: Haskell.IO ()
 writeScript = Haskell.void $ writeFileTextEnvelope "Ed25519.plutus" Nothing scriptSerialised
+
+writeJSON :: Plutus.ToData a => Haskell.FilePath -> a -> Haskell.IO ()
+writeJSON file = LBS.writeFile file . encode . scriptDataToJson ScriptDataJsonDetailedSchema . fromPlutusData . Plutus.toData

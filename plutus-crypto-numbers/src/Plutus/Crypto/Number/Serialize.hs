@@ -26,7 +26,7 @@ i2osp n
     where go m 
             | m == 0    = emptyByteString
             | otherwise = go (m `quotient` 256) <> consByteString (m `remainder` 256) emptyByteString
-{-# INLINEABLE i2osp #-}
+{-# INLINABLE i2osp #-}
 
 -- | os2ip converts a builtin byte string into a positive integer
 --   Plutus version of `(Crypto.Number.Serialize.os2ip)`
@@ -42,7 +42,7 @@ os2ip bs
           go xs
             | xs == emptyByteString = 0
             | otherwise             = intAtLastByte xs + 256 * go (stripLastByte xs)
-{-# INLINEABLE os2ip #-}
+{-# INLINABLE os2ip #-}
 
 -- | Just like i2osp, but take an extra parameter for size. 
 --   if the number is too big to fit in len bytes, nothing is returned 
@@ -53,7 +53,7 @@ i2ospOf len n
     | n >= 256 `exponentiate` len   = Nothing
     | otherwise                     = Just ((nullPadding (len - lengthOfByteString bs)) <> bs)
     where bs = i2osp n
-{-# INLINEABLE i2ospOf #-}
+{-# INLINABLE i2ospOf #-}
 
 
 -- | Just like i2ospOf except that it doesn't expect a failure:
