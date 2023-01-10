@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# OPTIONS_GHC -fno-specialise #-}
 
 module Plutus.Data.Bits (
 -- * conversion functions
@@ -6,10 +7,7 @@ module Plutus.Data.Bits (
 , byteBEToInt
 , intToByteLE
 , byteLEToInt
-, bitsLEToInt
-, bitsBEToInt
 -- * inversion functions
-, reverseByte
 , reverseBS
 -- * bit operation on builtin byte strings
 , setBit
