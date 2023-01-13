@@ -2,7 +2,7 @@
 A naive implementation of a twisted Ed25519 curve in Plutus for fun. This implementation is naive since it implements the twisted Edward curve over the finite field `F_q` (q = 2^255-19) in a mathematical correct but inefficient way.
 
 # Disclaimer
-This is not an audited, use at your own risk!
+This is not an audited, use at your own risk! Also do not use this library to generate any secret keys! This library is not secure against side channel attacks!
 
 # Possible improvements
 From the source of these improvements see the original DJB paper "High speed High-security signatures"
