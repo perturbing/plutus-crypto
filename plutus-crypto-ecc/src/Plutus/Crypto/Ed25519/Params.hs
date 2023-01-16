@@ -15,7 +15,7 @@ import PlutusTx.Builtins
 
 import qualified Prelude as Haskell
 
-newtype Ed25519FElement = Ed25519FElement Integer deriving (Haskell.Show)
+newtype Ed25519FElement = Ed25519FElement {unEd25519FElement :: Integer} deriving (Haskell.Show)
 unstableMakeIsData ''Ed25519FElement
 
 newtype Ed25519GElement = Ed25519GElement (Ed25519FElement,Ed25519FElement) deriving (Haskell.Show)

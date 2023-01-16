@@ -8,7 +8,7 @@ module Plutus.Crypto.Ed25519.Group (
 
 import PlutusTx
 import PlutusTx.Prelude
-import Plutus.Crypto.Ed25519.Field (Ed25519FElement (..), ed25519_F_recip)
+import Plutus.Crypto.Ed25519.Field (Ed25519FElement (..), reciprocal)
 import Plutus.Crypto.Ed25519.Params (Ed25519GElement (..), ed25519_d, ed25519_P)
 
 instance Eq Ed25519GElement where
@@ -29,8 +29,8 @@ instance AdditiveSemigroup Ed25519GElement where
                 x1y2 = x1 * y2
                 x2y1 = x2 * y1
                 dxy  = ed25519_d * x1x2 * y1y2
-                x3   = (x1y2 + x2y1) * ed25519_F_recip (one + dxy)
-                y3   = (y1y2 + x1x2) * ed25519_F_recip (one - dxy)
+                x3   = (x1y2 + x2y1) * reciprocal (one + dxy)
+                y3   = (y1y2 + x1x2) * reciprocal (one - dxy)
             
 instance AdditiveMonoid Ed25519GElement where
     {-# INLINABLE zero #-}
@@ -51,7 +51,7 @@ instance Module Ed25519FElement Ed25519GElement where
                 | even x                            = go (n * invTwo) p + go (n * invTwo) p
                 | otherwise                         = p + go ((n-one)* invTwo) p + go ((n-one)*invTwo) p
                 where Ed25519FElement x = n
-                      invTwo = Ed25519FElement 28948022309329048855892746252171976963317496166410141009864396001978282409975
+                      invTwo = reciprocal (Ed25519FElement 2)
 
 -- | Check if a point lies on the Ed25519 curve above
 ed25519_check_point :: Ed25519GElement -> Bool

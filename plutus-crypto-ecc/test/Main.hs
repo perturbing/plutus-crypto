@@ -1,6 +1,6 @@
 module Main where
 
-import Plutus.Crypto.Ed25519.Field (ed25519_F_recip)
+import Plutus.Crypto.Ed25519.Field (reciprocal)
 import Plutus.Crypto.Ed25519
 import qualified PlutusTx.Numeric as P
 import qualified PlutusTx.Eq as P
@@ -53,7 +53,7 @@ prop_F_mul_identity a = a P.* P.one P.== a
 prop_F_mul_inverses :: Ed25519FElement -> Bool
 prop_F_mul_inverses a 
     | a P.== P.zero = True
-    | otherwise   = a P.* ed25519_F_recip a P.== P.one
+    | otherwise   = a P.* reciprocal a P.== P.one
 
 -- | Group prop of Ed25519
 

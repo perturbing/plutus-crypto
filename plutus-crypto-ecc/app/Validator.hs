@@ -34,11 +34,8 @@ import qualified Plutus.Crypto.Number.Serialize as S
 
 
 {-# INLINEABLE ed25519Val #-}
-ed25519Val :: ED.Scalar -> ED.Scalar -> Plutus.ScriptContext -> Bool
-ed25519Val x n _ = scale (convert n) ED.ed25519_P == ED.Ed25519GElement (convert x, y)
-  where
-    convert = ED.Ed25519FElement . ED.fromBytes . ED.unScalar
-    y = ED.Ed25519FElement 22824742104823616207381092674575836109701451941046386595932633444145917304340
+ed25519Val :: ED.Ed25519FElement -> ED.Ed25519FElement -> Plutus.ScriptContext -> Bool
+ed25519Val x n _ = x == ED.reciprocal n
 
 validator :: Plutus.Validator
 validator = Plutus.Validator $ Plutus.fromCompiledCode ($$(Plutus.compile [|| wrap ||]))
