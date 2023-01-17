@@ -2,7 +2,8 @@
 
 module Plutus.Crypto.Ed25519.Field (
     Ed25519FElement (..),
-    reciprocal
+    reciprocal,
+    div
 ) where
 
 import PlutusTx
@@ -41,7 +42,7 @@ instance MultiplicativeMonoid Ed25519FElement where
 
 -- | unsafe of b = 0.
 instance MultiplicativeGroup Ed25519FElement where
-    (/) a (Ed25519FElement b) = a * Ed25519FElement x
+    div a (Ed25519FElement b) = a * Ed25519FElement x
         where Ed25519FElement p = ed25519_p
               x = exponentiateMod b (p-2) p
 
@@ -64,16 +65,16 @@ instance Module Ed25519FElement Ed25519FElement where
 
 -- | A 'Group' that it is sensible to describe using multiplication, one, and division.
 class MultiplicativeMonoid a => MultiplicativeGroup a where
-    (/) :: a -> a -> a
+    div :: a -> a -> a
 
 instance Group a => MultiplicativeGroup (Multiplicative a) where
-    {-# INLINABLE (/) #-}
-    Multiplicative x / Multiplicative y = Multiplicative (x `gsub` y)
+    {-# INLINABLE div #-}
+    Multiplicative x `div` Multiplicative y = Multiplicative (x `gsub` y)
 
 -- | the unsafe inverse of the multiplicative group over the field (excluding 0). 
 -- This is only used in the additive definition of the Ed25519 group of point addition along the curve
 -- In this case, the input can never be 0 (one +- dxy is strictly non zero)
 -- a^{-1} = a^{p-2} since by fermats little theorem: a^{p-2} * a = a^{p-1} = 1
 reciprocal :: MultiplicativeGroup a => a -> a
-reciprocal x = one / x
+reciprocal x = one `div` x
 {-# INLINABLE reciprocal #-}
